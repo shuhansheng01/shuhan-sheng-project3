@@ -1,8 +1,8 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import NavBar from './components/NavBar'; // 确保 N 和 B 大写
+import NavBar from './components/Navbar'; 
 
-// 引入页面
+// Import Pages
 import Home from './pages/Home';
 import Rules from './pages/Rules';
 import Scores from './pages/Scores';
