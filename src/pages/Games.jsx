@@ -46,8 +46,6 @@ export default function Games() {
   const handleClearAll = async () => {
     if (!window.confirm("Delete all history?")) return;
     try {
-      // Core Fix: Use POST /clear_all for stability on deployment 
-environments
       await axios.post("http://localhost:8000/api/sudoku/clear_all");
       
       setGames([]); 
@@ -56,7 +54,6 @@ environments
 
       alert("History cleared successfully!");
     } catch (err) {
-      // Force refresh attempt even if 500 is received
       fetchGames(); 
       alert("Attempted to clear history. List should now be empty.");
       console.error("Clear All Attempted Error:", err.response ? 
@@ -160,10 +157,10 @@ games found. Start a new one!</p>
                   </span>
                   <p style={{
                       fontSize: '0.8rem', 
-                      color: '#64748b', 
+                      // 修复：只保留一个 color 属性
+                      color: game.isCompleted ? 'green' : '#64748b', 
                       margin: '10px 0 0',
                       fontWeight: game.isCompleted ? 'bold' : 'normal',
-                      color: game.isCompleted ? 'green' : '#64748b'
                   }}>
                       {game.isCompleted ? `✅ Completed in ${game.time ? 
 Math.floor(game.time / 60) + ':' + (game.time % 60).toString().padStart(2, 
