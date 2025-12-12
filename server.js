@@ -2,6 +2,12 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import * as dotenv from 'dotenv'; 
+
+// Load environment variables for local testing
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 const app = express();
 
@@ -13,16 +19,22 @@ app.use(express.json());
 app.use(cookieParser());
 
 // --- Database Connection ---
+const mongoURI = process.env.MONGO_URI;
+
+// Hardcoded fallback for local testing if MONGO_URI is not set in .env
 const part1 = "mongodb+srv://shuhansheng:VA1MMzVwHzQVPIgU";
 const part2 = "@cluster0.4kjvzxu.mongodb.net/sudoku";
 const part3 = "?retryWrites=true&w=majority&appName=Cluster0";
-const mongoURI = part1 + part2 + part3;
+const fallbackURI = part1 + part2 + part3;
 
-console.log("Connecting...");
+const connectionURI = mongoURI || fallbackURI;
 
-mongoose.connect(mongoURI)
+console.log("Connecting to MongoDB...");
+
+mongoose.connect(connectionURI)
   .then(() => console.log("DB Connected: Success"))
   .catch((err) => console.error("DB Error: Failed to connect", err));
+
 
 // --- Database Schemas ---
 
@@ -270,7 +282,7 @@ app.delete('/api/sudoku/:id', async (req, res) => {
   } catch (e) { res.status(500).send("Error"); }
 });
 
-// 核心修复：清空所有历史 (使用 POST /clear_all)
+// Core Fix: Clear All History (using POST /clear_all for stability)
 app.post('/api/sudoku/clear_all', async (req, res) => {
   try {
     const [gameResult, scoreResult] = await Promise.all([
