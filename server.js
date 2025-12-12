@@ -25,23 +25,33 @@ app.use(cookieParser());
 const mongoURI = process.env.MONGO_URI;
 
 // Hardcoded fallback for local testing if MONGO_URI is not set
-// 🚨 最终确认的正确密码: VA1MMzVwHzQVPIgU
+// FINAL CONFIRMED PASSWORD: VA1MMzVwHzQVPIgU
 const correctPassword = "VA1MMzVwHzQVPIgU";
 const part1 = 
 `mongodb+srv://shuhansheng:${correctPassword}@cluster0.4kjvzxu.mongodb.net/sudoku`;
 const part2 = "?retryWrites=true&w=majority&appName=Cluster0";
-const fallbackURI = part1 + part2;
-
-const connectionURI = mongoURI || fallbackURI;
+const connectionURI = mongoURI || (part1 + part2);
 
 console.log("Connecting to MongoDB...");
 
-mongoose.connect(connectionURI)
+// 🚨 Added robust connection options for deployment environment
+mongoose.connect(connectionURI, {
+    useNewUrlParser: true,      // Deprecated, but good for stability in 
+older configs
+    useUnifiedTopology: true,   // Recommended for modern driver
+})
   .then(() => console.log("DB Connected: Success"))
-  .catch((err) => console.error("DB Error: Failed to connect", err));
+  .catch((err) => {
+      console.error("DB Error: Failed to connect with Mongoose:", err);
+      // Log the specific error if it's an authentication error
+      if (err.name === 'MongoServerError' && err.code === 8000) {
+           console.error("!!! AUTHENTICATION FAILED: Check MongoDB 
+Username/Password in Render ENV.");
+      }
+  });
 
 
-// --- Database Schemas ---
+// --- Database Schemas (Omitted for brevity, assumed correct) ---
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -74,12 +84,10 @@ const E_BD =
 [[1,2,0,0,5,6],[0,5,6,1,0,0],[2,0,1,0,6,0],[5,6,0,0,0,1],[0,0,2,6,4,0],[6,0,0,3,0,2]];
 const E_SOL = 
 [[1,2,3,4,5,6],[4,5,6,1,2,3],[2,3,1,5,6,4],[5,6,4,2,3,1],[3,1,2,6,4,5],[6,4,5,3,1,2]];
-
 const N_BD = 
 [[5,3,0,0,7,0,0,0,0],[6,0,0,1,9,5,0,0,0],[0,9,8,0,0,0,0,6,0],[8,0,0,0,6,0,0,0,3],[4,0,0,8,0,3,0,0,1],[7,0,0,0,2,0,0,0,6],[0,6,0,0,0,0,2,8,0],[0,0,0,4,1,9,0,0,5],[0,0,0,0,8,0,0,7,9]];
 const N_SOL = 
 [[5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],[8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6],[9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]];
-
 const WORDS = ["apple", "banana", "cherry", "date", "elderberry", "fig", 
 "grape", "honeydew", "kiwi", "lemon", "mango", "nectarine", "orange", 
 "papaya", "quince", "raspberry", "strawberry", "tangerine", "watermelon", 
@@ -199,7 +207,14 @@ app.post('/api/user/register', async (req, res) => {
     const newUser = new User({ username, password });
     await newUser.save();
     res.send("OK");
-  } catch (e) { res.status(500).send("Error"); }
+  } catch (e) { 
+    console.error("Register route error:", e);
+    // Log detailed Mongoose error for debugging
+    if (e.name === 'MongoServerError' || e.name === 'MongooseError') {
+        console.error("Mongoose specific error during registration:", e);
+    }
+    res.status(500).send("Error"); 
+  }
 });
 
 app.post('/api/user/login', async (req, res) => {
