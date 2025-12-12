@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// 🚨 修复：由于 Scores.css 不存在，我们移除导入语句
-// import "./Scores.css"; // 确保这行被移除
+import "./Form.css"; // 🚨 确保导入 Form.css 来加载样式
 
 export default function Scores() {
   const [scores, setScores] = useState([]);

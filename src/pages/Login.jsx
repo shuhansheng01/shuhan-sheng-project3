@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import "./Form.css"; // 🚨 确保导入 Form.css
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -13,7 +14,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // 🚨 修复: 使用相对路径 /api/...
+      // 使用相对路径 /api/...
       const response = await axios.post('/api/user/login', {
         username,
         password,
