@@ -25,33 +25,33 @@ app.use(cookieParser());
 const mongoURI = process.env.MONGO_URI;
 
 // Hardcoded fallback for local testing if MONGO_URI is not set
-// FINAL CONFIRMED PASSWORD: VA1MMzVwHzQVPIgU
 const correctPassword = "VA1MMzVwHzQVPIgU";
 const part1 = 
 `mongodb+srv://shuhansheng:${correctPassword}@cluster0.4kjvzxu.mongodb.net/sudoku`;
 const part2 = "?retryWrites=true&w=majority&appName=Cluster0";
-const connectionURI = mongoURI || (part1 + part2);
+const fallbackURI = part1 + part2;
+
+const connectionURI = mongoURI || fallbackURI;
 
 console.log("Connecting to MongoDB...");
 
-// 🚨 Added robust connection options for deployment environment
+// Robust connection options without problematic comments
 mongoose.connect(connectionURI, {
-    useNewUrlParser: true,      // Deprecated, but good for stability in 
-older configs
-    useUnifiedTopology: true,   // Recommended for modern driver
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 })
   .then(() => console.log("DB Connected: Success"))
   .catch((err) => {
       console.error("DB Error: Failed to connect with Mongoose:", err);
-      // Log the specific error if it's an authentication error
-      if (err.name === 'MongoServerError' && err.code === 8000) {
+      if (err.name === 'MongoServerError' || err.name === 'MongooseError') 
+{
            console.error("!!! AUTHENTICATION FAILED: Check MongoDB 
 Username/Password in Render ENV.");
       }
   });
 
 
-// --- Database Schemas (Omitted for brevity, assumed correct) ---
+// --- Database Schemas (Simplified) ---
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -79,7 +79,7 @@ const ScoreSchema = new mongoose.Schema({
 });
 const Score = mongoose.model('Score', ScoreSchema);
 
-// --- Static Data and Helpers (Omitted for brevity) ---
+// --- Static Data and Helpers (Omitted for brevity, assumed correct) ---
 const E_BD = 
 [[1,2,0,0,5,6],[0,5,6,1,0,0],[2,0,1,0,6,0],[5,6,0,0,0,1],[0,0,2,6,4,0],[6,0,0,3,0,2]];
 const E_SOL = 
@@ -209,7 +209,6 @@ app.post('/api/user/register', async (req, res) => {
     res.send("OK");
   } catch (e) { 
     console.error("Register route error:", e);
-    // Log detailed Mongoose error for debugging
     if (e.name === 'MongoServerError' || e.name === 'MongooseError') {
         console.error("Mongoose specific error during registration:", e);
     }
