@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import path from 'path'; // NEW: Required for serving static files
+import path from 'path'; 
 import * as dotenv from 'dotenv'; 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -11,10 +11,13 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express();
 
+// 1. CORS MUST BE FIRST
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
+
+// 2. Middleware MUST FOLLOW
 app.use(express.json());
 app.use(cookieParser());
 
@@ -22,10 +25,12 @@ app.use(cookieParser());
 const mongoURI = process.env.MONGO_URI;
 
 // Hardcoded fallback for local testing if MONGO_URI is not set
-const part1 = "mongodb+srv://shuhansheng:VA1MMzVwHzQVPIgU";
-const part2 = "@cluster0.4kjvzxu.mongodb.net/sudoku";
-const part3 = "?retryWrites=true&w=majority&appName=Cluster0";
-const fallbackURI = part1 + part2 + part3;
+// 🚨 最终确认的正确密码: VA1MMzVwHzQVPIgU
+const correctPassword = "VA1MMzVwHzQVPIgU";
+const part1 = 
+`mongodb+srv://shuhansheng:${correctPassword}@cluster0.4kjvzxu.mongodb.net/sudoku`;
+const part2 = "?retryWrites=true&w=majority&appName=Cluster0";
+const fallbackURI = part1 + part2;
 
 const connectionURI = mongoURI || fallbackURI;
 
@@ -64,7 +69,7 @@ const ScoreSchema = new mongoose.Schema({
 });
 const Score = mongoose.model('Score', ScoreSchema);
 
-// --- Static Data and Helpers ---
+// --- Static Data and Helpers (Omitted for brevity) ---
 const E_BD = 
 [[1,2,0,0,5,6],[0,5,6,1,0,0],[2,0,1,0,6,0],[5,6,0,0,0,1],[0,0,2,6,4,0],[6,0,0,3,0,2]];
 const E_SOL = 
