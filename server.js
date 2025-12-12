@@ -4,7 +4,6 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv'; 
 
-// Load environment variables for local testing
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
@@ -21,7 +20,7 @@ app.use(cookieParser());
 // --- Database Connection ---
 const mongoURI = process.env.MONGO_URI;
 
-// Hardcoded fallback for local testing if MONGO_URI is not set in .env
+// Hardcoded fallback for local testing if MONGO_URI is not set
 const part1 = "mongodb+srv://shuhansheng:VA1MMzVwHzQVPIgU";
 const part2 = "@cluster0.4kjvzxu.mongodb.net/sudoku";
 const part3 = "?retryWrites=true&w=majority&appName=Cluster0";

@@ -9,7 +9,7 @@ export default function Games() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // 1. Check Login Status
+  // Check Login Status
   useEffect(() => {
     axios.get("http://localhost:8000/api/user/me", { withCredentials: true 
 })
@@ -46,7 +46,8 @@ export default function Games() {
   const handleClearAll = async () => {
     if (!window.confirm("Delete all history?")) return;
     try {
-      // Core Fix: Changed to axios.post and new URL for stability
+      // Core Fix: Use POST /clear_all for stability on deployment 
+environments
       await axios.post("http://localhost:8000/api/sudoku/clear_all");
       
       setGames([]); 

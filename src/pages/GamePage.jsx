@@ -39,12 +39,12 @@ parseInt(c)))),
 
 
   useEffect(() => {
-    // 获取游戏数据
+    // Fetch game data
     axios.get(`http://localhost:8000/api/sudoku/${gameId}`)
       .then(res => {
         const data = res.data;
         
-        // 🚨 核心修复：检查数据有效性
+        // Safety check for data validity
         if (!data || !Array.isArray(data.solution) || 
 !Array.isArray(data.board)) {
             setError("Game data is invalid or missing.");
@@ -56,13 +56,14 @@ parseInt(c)))),
         setDifficulty(data.difficulty);
         setIsWin(data.isCompleted); 
         
+        // Load final time if game is complete
         if (data.isCompleted && data.time) {
             setSeconds(data.time);
         } else {
             setSeconds(0); 
         }
         
-        // 如果游戏已完成，显示答案
+        // Display solution if game is complete
         const initialBoard = data.isCompleted ? 
           data.solution.map(row => row.map(String)) : 
           data.board.map(row => row.map(c => (c === 0 ? "" : String(c))));
@@ -82,7 +83,7 @@ parseInt(c)))),
       });
   }, [gameId]);
 
-  // 计时器
+  // Timer
   useEffect(() => {
     if (loading || isWin) return;
     const timerId = setInterval(() => setSeconds(s => s + 1), 1000);
@@ -160,7 +161,7 @@ parseInt(c)))),
     setBoard(resetBoard);
     setSeconds(0);
     setIsWin(false);
-    updateGameProgress(resetBoard, false, 0); // 重置时清空数据库进度
+    updateGameProgress(resetBoard, false, 0); 
   };
 
   const handleDelete = async () => {
@@ -173,7 +174,6 @@ parseInt(c)))),
 
   if (loading) return <div>Loading...</div>;
   
-  // 渲染错误信息
   if (error) return <div style={{color:'red', padding:20, 
 textAlign:'center'}}>
       <h2>Game Load Error</h2>
