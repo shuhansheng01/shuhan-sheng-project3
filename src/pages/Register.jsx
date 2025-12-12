@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import "./Form.css"; // 🚨 确保导入 Form.css
+import "./Form.css"; // 🚨 确保路径正确
 
 export default function Register() {
   const [username, setUsername] = useState('');
@@ -14,7 +14,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      // 修复: 使用相对路径 /api/...
+      // 使用相对路径 /api/...
       const response = await axios.post('/api/user/register', {
         username,
         password,
