@@ -46,6 +46,7 @@ export default function Games() {
   const handleClearAll = async () => {
     if (!window.confirm("Delete all history?")) return;
     try {
+      // Use POST /clear_all for stability
       await axios.post("http://localhost:8000/api/sudoku/clear_all");
       
       setGames([]); 
@@ -157,7 +158,6 @@ games found. Start a new one!</p>
                   </span>
                   <p style={{
                       fontSize: '0.8rem', 
-                      // 修复：只保留一个 color 属性
                       color: game.isCompleted ? 'green' : '#64748b', 
                       margin: '10px 0 0',
                       fontWeight: game.isCompleted ? 'bold' : 'normal',
@@ -168,7 +168,7 @@ Math.floor(game.time / 60) + ':' + (game.time % 60).toString().padStart(2,
                   </p>
                   <p style={{fontSize: '0.75rem', color: '#94a3b8', 
 margin: '5px 0 0'}}>
-                      Created: {formatDate(game.createdAt)}
+                      Created: {formatTime(game.createdAt)}
                   </p>
                 </Link>
               </div>
