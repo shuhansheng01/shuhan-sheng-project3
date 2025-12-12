@@ -1,61 +1,71 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Form.css"; 
+import { useNavigate } from "react-router-dom";
+import "./Scores.css"; 
 
 export default function Scores() {
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/score")
+    // 🚨 修复: 使用相对路径 /api/...
+    axios.get("/api/score")
       .then(res => {
         setScores(res.data);
         setLoading(false);
       })
       .catch(err => {
-        console.error(err);
+        console.error("Error fetching scores:", err);
+        setError("Failed to load scores. Check server connection.");
         setLoading(false);
       });
   }, []);
 
-  const formatTime = (s) => {
-    const min = Math.floor(s / 60);
-    const sec = s % 60;
-    return min + ":" + sec.toString().padStart(2, '0');
+  const formatTime = (totalSeconds) => {
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, 
+'0')}`;
   };
 
-  const formatDate = (d) => new Date(d).toLocaleDateString();
+  if (loading) return <div className="scores-container">Loading 
+scores...</div>;
+  if (error) return <div className="scores-container" 
+style={{color:'red'}}>{error}</div>;
 
   return (
-    <div className="form-container">
-      <h1>Leaderboard</h1>
+    <div className="scores-container">
+      <header>
+        <h1>🏆 Global Leaderboard</h1>
+        <button onClick={() => navigate('/games')} 
+className="back-button">Back to Lobby</button>
+      </header>
       
-      {loading && <p>Loading...</p>}
-      
-      {!loading && scores.length === 0 && (
-        <p>No scores yet.</p>
-      )}
-
-      {!loading && scores.length > 0 && (
-        <table style={{ width: '100%', textAlign: 'left' }}>
+      {scores.length === 0 ? (
+        <p style={{textAlign:'center', color:'#888', marginTop: 30}}>No 
+scores submitted yet. Be the first to win!</p>
+      ) : (
+        <table className="scores-table">
           <thead>
-            <tr style={{ color: '#666' }}>
+            <tr>
               <th>Rank</th>
-              <th>Player</th>
+              <th>Username</th>
               <th>Time</th>
-              <th>Mode</th>
+              <th>Difficulty</th>
               <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            {scores.map((s, i) => (
-              <tr key={s._id}>
-                <td>{i + 1}</td>
-                <td><strong>{s.username}</strong></td>
-                <td style={{ color: 'green' }}>{formatTime(s.time)}</td>
-                <td>{s.difficulty}</td>
-                <td style={{ fontSize: '0.8rem' 
-}}>{formatDate(s.date)}</td>
+            {scores.map((score, index) => (
+              <tr key={score._id}>
+                <td>{index + 1}</td>
+                <td><strong>{score.username}</strong></td>
+                <td>{formatTime(score.time)}</td>
+                <td><span className={`badge 
+${score.difficulty}`}>{score.difficulty}</span></td>
+                <td>{new Date(score.date).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>

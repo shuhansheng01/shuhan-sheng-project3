@@ -11,8 +11,8 @@ export default function Games() {
 
   // Check Login Status
   useEffect(() => {
-    axios.get("http://localhost:8000/api/user/me", { withCredentials: true 
-})
+    // 🚨 修复: 使用相对路径 /api/...
+    axios.get("/api/user/me", { withCredentials: true })
       .then(res => {
         setUsername(res.data.username);
         fetchGames();
@@ -24,7 +24,8 @@ export default function Games() {
 
   // Fetch Games List
   const fetchGames = () => {
-    axios.get("http://localhost:8000/api/sudoku")
+    // 🚨 修复: 使用相对路径 /api/...
+    axios.get("/api/sudoku")
       .then(res => setGames(res.data))
       .catch(err => {
         console.error(err);
@@ -34,7 +35,8 @@ export default function Games() {
 
   const handleCreateGame = async (difficultyLevel) => {
     try {
-      const res = await axios.post("http://localhost:8000/api/sudoku", { 
+      // 🚨 修复: 使用相对路径 /api/...
+      const res = await axios.post("/api/sudoku", { 
         difficulty: difficultyLevel 
       });
       navigate(`/game/${res.data._id}`);
@@ -46,8 +48,8 @@ export default function Games() {
   const handleClearAll = async () => {
     if (!window.confirm("Delete all history?")) return;
     try {
-      // Use POST /clear_all for stability
-      await axios.post("http://localhost:8000/api/sudoku/clear_all");
+      // 🚨 修复: 使用相对路径 /api/...
+      await axios.post("/api/sudoku/clear_all");
       
       setGames([]); 
       setError(null);
@@ -65,8 +67,8 @@ err.response.data : err.message);
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:8000/api/user/logout", {}, { 
-withCredentials: true });
+      // 🚨 修复: 使用相对路径 /api/...
+      await axios.post("/api/user/logout", {}, { withCredentials: true });
       navigate("/login");
     } catch (err) {
       console.error("Logout failed");
@@ -168,7 +170,7 @@ Math.floor(game.time / 60) + ':' + (game.time % 60).toString().padStart(2,
                   </p>
                   <p style={{fontSize: '0.75rem', color: '#94a3b8', 
 margin: '5px 0 0'}}>
-                      Created: {formatTime(game.createdAt)}
+                      Created: {formatDate(game.createdAt)}
                   </p>
                 </Link>
               </div>

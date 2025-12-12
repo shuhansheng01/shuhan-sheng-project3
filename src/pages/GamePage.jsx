@@ -5,8 +5,9 @@ import "./GamePage.css";
 
 const getCurrentUser = async function () {
   try {
-    const res = await axios.get("http://localhost:8000/api/user/me", { 
-withCredentials: true });
+    // 🚨 修复: 使用相对路径 /api/...
+    const res = await axios.get("/api/user/me", { withCredentials: true 
+});
     return res.data.username;
   } catch (e) {
     return "Guest";
@@ -29,7 +30,8 @@ export default function GamePage() {
 
   const updateGameProgress = function(newBoard, completed = false, 
 finalTime = 0) {
-    axios.put(`http://localhost:8000/api/sudoku/${gameId}`, {
+    // 🚨 修复: 使用相对路径 /api/...
+    axios.put(`/api/sudoku/${gameId}`, {
       board: newBoard.map(row => row.map(c => (c === "" ? 0 : 
 parseInt(c)))),
       isCompleted: completed,
@@ -40,7 +42,8 @@ parseInt(c)))),
 
   useEffect(() => {
     // Fetch game data
-    axios.get(`http://localhost:8000/api/sudoku/${gameId}`)
+    // 🚨 修复: 使用相对路径 /api/...
+    axios.get(`/api/sudoku/${gameId}`)
       .then(res => {
         const data = res.data;
         
@@ -101,7 +104,8 @@ parseInt(c)))),
       try {
         const currentUsername = await getCurrentUser();
         
-        await axios.post("http://localhost:8000/api/score", {
+        // 🚨 修复: 使用相对路径 /api/...
+        await axios.post("/api/score", {
           time: finalTime,
           difficulty: diff,
           username: currentUsername
@@ -167,7 +171,8 @@ parseInt(c)))),
   const handleDelete = async () => {
     if (!window.confirm("Delete?")) return;
     try {
-      await axios.delete(`http://localhost:8000/api/sudoku/${gameId}`);
+      // 🚨 修复: 使用相对路径 /api/...
+      await axios.delete(`/api/sudoku/${gameId}`);
       navigate("/games");
     } catch (e) { alert("Delete failed"); }
   };

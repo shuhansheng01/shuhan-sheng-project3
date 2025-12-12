@@ -1,55 +1,68 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./Form.css";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
     try {
-      // ⚠️ 直连后端，并且开启 withCredentials 以保存 Cookie
-      await axios.post("http://localhost:8000/api/user/login", {
+      // 🚨 修复: 使用相对路径 /api/...
+      const response = await axios.post('/api/user/login', {
         username,
-        password
+        password,
       }, { withCredentials: true });
-      
-      navigate("/games");
+
+      if (response.data === 'OK') {
+        navigate('/games');
+      } else {
+        alert('Login failed: Unknown response.');
+      }
+
     } catch (err) {
-      console.error(err);
-      setError("Invalid username or password");
+      console.error('Login error details:', err.response || err);
+      let message = 'Login failed.';
+      if (err.response && err.response.data === 'Bad login') {
+        message = 'Invalid username or password.';
+      } else {
+        message = 'Login failed. Check server connection.';
+      }
+      alert(message);
     }
+    setLoading(false);
   };
 
   return (
-    <div className="form-container">
-      <h1>Login</h1>
-      <div className="form-group">
-        <label>Username</label>
-        <input 
-          value={username} 
-          onChange={(e) => setUsername(e.target.value)} 
-          type="text" 
+    <div className="auth-container">
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
         />
-      </div>
-      <div className="form-group">
-        <label>Password</label>
-        <input 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          type="password" 
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
-      </div>
-      
-      {error && <p className="error-msg" 
-style={{color:'red'}}>{error}</p>}
-
-      <button onClick={handleLogin} className="btn-primary">
-        Login
-      </button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
+        <p>
+          Don't have an account? <a href="/register">Register here</a>.
+        </p>
+      </form>
     </div>
   );
 }
