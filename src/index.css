@@ -1,15 +1,36 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
-'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f7fa;
+/* --- src/index.css: Final Global Styles for Centering and Layout --- */
+
+/* 1. 全局样式重置和背景 */
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f9; /* 柔和的背景色，与 Form.css 搭配 */
+    min-height: 100vh; /* 确保 body 填满整个视口高度 */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* 2. 应用根容器的布局设置 */
+#root, .app-container {
+    /* 确保容器填满可用空间 */
+    min-height: 100vh; 
+    width: 100%;
+    
+    /* 🚨 核心修复：使用 Flexbox 强制内容水平居中 */
+    display: flex;
+    flex-direction: column; 
+    /* align-items: center; 通常会居中，但 NavBar 等会因此变形 */
+}
+
+/* 3. 页面内容居中容器 */
+/* 我们不能直接在 .app-container 上居中，因为它包含导航栏。
+   Login/Scores/Register 内部的 .auth-container / .scores-container 
+   的 margin: auto 属性需要一个居中的上下文。
+   这个样式只是确保布局的基础结构是正确的。
+*/
+
+
+/* 4. 基础字体和颜色 */
+h1, h2, h3 {
+    color: #333;
 }
