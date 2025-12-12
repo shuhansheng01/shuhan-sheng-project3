@@ -35,19 +35,14 @@ const connectionURI = mongoURI || fallbackURI;
 
 console.log("Connecting to MongoDB...");
 
-// Robust connection options without problematic comments
+// Robust connection options, CLEANED
 mongoose.connect(connectionURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
   .then(() => console.log("DB Connected: Success"))
   .catch((err) => {
-      console.error("DB Error: Failed to connect with Mongoose:", err);
-      if (err.name === 'MongoServerError' || err.name === 'MongooseError') 
-{
-           console.error("!!! AUTHENTICATION FAILED: Check MongoDB 
-Username/Password in Render ENV.");
-      }
+      console.error("DB Error: Failed to connect:", err);
   });
 
 
@@ -209,9 +204,6 @@ app.post('/api/user/register', async (req, res) => {
     res.send("OK");
   } catch (e) { 
     console.error("Register route error:", e);
-    if (e.name === 'MongoServerError' || e.name === 'MongooseError') {
-        console.error("Mongoose specific error during registration:", e);
-    }
     res.status(500).send("Error"); 
   }
 });
