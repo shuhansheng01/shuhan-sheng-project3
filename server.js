@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import path from 'path'; // NEW: Required for serving static files
 import * as dotenv from 'dotenv'; 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -324,6 +325,23 @@ app.get('/api/score', async (req, res) => {
     res.status(500).send("Error fetching scores");
   }
 });
+
+// -----------------------------------------------------
+// 4. Serve Frontend Static Files (Deployment Fix for "Cannot GET /")
+// -----------------------------------------------------
+
+if (process.env.NODE_ENV === 'production') {
+  // Use current directory for path resolution
+  const __dirname = path.resolve();
+
+  // 1. Point Express to the client's build directory
+  app.use(express.static(path.join(__dirname, 'dist')));
+
+  // 2. For any other GET request (like /games, /scores), serve index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+  });
+}
 
 
 // --- Server Start ---
