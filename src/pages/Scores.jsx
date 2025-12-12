@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Scores.css"; 
+// 🚨 修复：由于 Scores.css 不存在，我们移除导入语句
+// import "./Scores.css"; // 确保这行被移除
 
 export default function Scores() {
   const [scores, setScores] = useState([]);
@@ -10,7 +11,7 @@ export default function Scores() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 🚨 修复: 使用相对路径 /api/...
+    // 使用相对路径 /api/...
     axios.get("/api/score")
       .then(res => {
         setScores(res.data);
