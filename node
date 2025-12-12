@@ -1,0 +1,138 @@
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
+const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+app.use(express.json());
+app.use(cookieParser());
+
+const mongoURI = 
+"mongodb+srv://shuhansheng:VA1MMzVwHzQVPIgU@cluster0.4kjvzxu.mongodb.net/sudoku?retryWrites=true&w=majority&appName=Cluster0";
+
+console.log("Connecting to MongoDB...");
+
+mongoose.connect(mongoURI)
+  .then(() => console.log("Success: Connected to MongoDB!"))
+  .catch((err) => console.error("Connection Failed:", err));
+
+const UserSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+const User = mongoose.model('User', UserSchema);
+
+const GameSchema = new mongoose.Schema({
+  difficulty: String,
+  board: [[Number]],
+  solution: [[Number]],
+  createdAt: { type: Date, default: Date.now }
+});
+const Game = mongoose.models.Game || mongoose.model('Game', GameSchema);
+
+const EASY_BOARD = 
+[[1,2,0,0,5,6],[0,5,6,1,0,0],[2,0,1,0,6,0],[5,6,0,0,0,1],[0,0,2,6,4,0],[6,0,0,3,0,2]];
+const EASY_SOLUTION = 
+[[1,2,3,4,5,6],[4,5,6,1,2,3],[2,3,1,5,6,4],[5,6,4,2,3,1],[3,1,2,6,4,5],[6,4,5,3,1,2]];
+
+const NORMAL_BOARD = 
+[[5,3,0,0,7,0,0,0,0],[6,0,0,1,9,5,0,0,0],[0,9,8,0,0,0,0,6,0],[8,0,0,0,6,0,0,0,3],[4,0,0,8,0,3,0,0,1],[7,0,0,0,2,0,0,0,6],[0,6,0,0,0,0,2,8,0],[0,0,0,4,1,9,0,0,5],[0,0,0,0,8,0,0,7,9]];
+const NORMAL_SOLUTION = 
+[[5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],[8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6],[9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]];
+
+app.post('/api/user/register', async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) return res.status(400).send("Missing 
+fields");
+
+  try {
+    const existingUser = await User.findOne({ username });
+    if (existingUser) return res.status(400).send("Username already 
+exists");
+
+    const newUser = new User({ username, password });
+    await newUser.save();
+    res.send("Registered successfully");
+  } catch (e) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.post('/api/user/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ username, password });
+    if (!user) return res.status(400).send("Invalid username or 
+password");
+
+    res.cookie('username', username, { httpOnly: false });
+    res.send("Logged in");
+  } catch (e) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.post('/api/user/logout', (req, res) => {
+  res.clearCookie('username');
+  res.send("Logged out");
+});
+
+app.get('/api/user/me', (req, res) => {
+  const username = req.cookies.username;
+  if (username) res.json({ username });
+  else res.status(401).send("Not logged in");
+});
+
+app.get('/api/sudoku', async (req, res) => {
+  try {
+    const games = await Game.find().sort({ createdAt: -1 });
+    res.json(games);
+  } catch (e) { res.json([]); }
+});
+
+app.post('/api/sudoku', async (req, res) => {
+  const { difficulty } = req.body;
+  let selectedBoard = difficulty === 'EASY' ? EASY_BOARD : NORMAL_BOARD;
+  let selectedSolution = difficulty === 'EASY' ? EASY_SOLUTION : 
+NORMAL_SOLUTION;
+
+  const newGame = new Game({
+    difficulty: difficulty || 'NORMAL',
+    board: JSON.parse(JSON.stringify(selectedBoard)),
+    solution: JSON.parse(JSON.stringify(selectedSolution))
+  });
+
+  try {
+    const saved = await newGame.save();
+    res.json(saved);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.delete('/api/sudoku/all', async (req, res) => {
+  try {
+    await Game.deleteMany({});
+    res.send("All Deleted");
+  } catch (e) { res.status(500).send("Error"); }
+});
+
+app.get('/api/sudoku/:id', async (req, res) => {
+  try {
+    const game = await Game.findById(req.params.id);
+    res.json(game);
+  } catch (e) { res.status(404).send("Not Found"); }
+});
+
+app.delete('/api/sudoku/:id', async (req, res) => {
+  try {
+    await Game.findByIdAndDelete(req.params.id);
+    res.send("Deleted");
+  } catch (e) { res.status(500).send("Error"); }
+});
+
+app.listen(8000, () => console.log("Server running on port 8000"));

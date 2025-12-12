@@ -1,0 +1,503 @@
+/* ===== Global layout & theme ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  background: radial-gradient(circle at top left, #fef6e4 0%, #e7f5ec 40%, #f3f5ff 100%);
+  color: #1f2933;
+}
+
+/* 整个 app 容器 */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 主内容区域 */
+main {
+  flex: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3.5rem;
+}
+
+/* 统一标题风格 */
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  color: #123047;
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-size: 2.4rem;
+  margin: 0 0 1rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+p {
+  margin: 0 0 0.75rem;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+/* 小小说明文字 */
+.text-muted {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* ===== Navbar 可爱自然风 ===== */
+
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(203, 213, 225, 0.5);
+}
+
+.app-nav-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0.6rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #14532d;
+}
+
+.nav-brand-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 20%, #f97373 0%, #facc15 35%, #4ade80 100%);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  color: #374151;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.nav-link:hover {
+  background: rgba(190, 242, 205, 0.7);
+  color: #14532d;
+  transform: translateY(-1px);
+}
+
+.nav-link-active {
+  background: #bbf7d0;
+  color: #14532d;
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);
+}
+
+/* 登录用户名展示 */
+.nav-username-pill {
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.85rem;
+}
+
+/* ===== 通用按钮 & 输入框 ===== */
+
+button {
+  font-family: inherit;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #bbf7d0, #a5f3fc);
+  border-color: #34d399;
+  color: #064e3b;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(34, 197, 94, 0.25);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #fecaca;
+}
+
+/* 表单整体 */
+
+.form-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 1.5rem;
+  padding: 1.8rem 1.6rem;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(209, 213, 219, 0.7);
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.95rem;
+  outline: none;
+  background: #f9fafb;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  border-color: #34d399;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.35);
+  background: #ffffff;
+}
+
+/* ===== 首页 & Rules 页的小卡片 ===== */
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 1.8rem;
+  padding: 2rem 1.8rem;
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(209, 213, 219, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  margin-bottom: 0.75rem;
+}
+
+.hero-scribble {
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #facc15 0%, #fb7185 45%, transparent 70%);
+  opacity: 0.55;
+}
+
+/* ===== Sudoku Board 可爱风 ===== */
+
+.board-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.board-card {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 1.6rem;
+  padding: 1.1rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(209, 213, 219, 0.9);
+}
+
+/* 如果 Board 里有使用 table，统一美化 */
+.board-card table {
+  border-collapse: collapse;
+}
+
+/* 通用的数字格子：针对 input number */
+.board-card input[type="number"] {
+  width: 44px;
+  height: 44px;
+  text-align: center;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #111827;
+  background: #f9fafb;
+  margin: 1px;
+  outline: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, transform 0.08s ease;
+}
+
+/* 初始给定的格子（假设 Board 会加这个 class） */
+.board-card input.given-cell {
+  background: #ecfdf3;
+  color: #15803d;
+  font-weight: 600;
+}
+
+/* 选中格子 */
+.board-card input:focus {
+  border-color: #34d399;
+  background: #e0f2fe;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.4);
+  transform: translateY(-1px);
+}
+
+/* 填错的格子（假设用 error 类名） */
+.board-card input.error-cell {
+  border-color: #f97373;
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* hover 轻微效果 */
+.board-card input:hover {
+  background: #f3f4f6;
+}
+
+/* 粗边框画出 3x3 / 2x3 子宫格的感觉 */
+.board-row {
+  display: flex;
+}
+
+.board-cell-group {
+  border-right: 2px solid #111827;
+}
+
+.board-row-divider {
+  border-bottom: 2px solid #111827;
+}
+
+/* Timer + 状态 */
+.game-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.meta-tag {
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 0.8rem;
+}
+
+.timer-pill {
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 0.85rem;
+}
+
+/* 底部按钮行 */
+.game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* ===== Games 列表页 ===== */
+
+.games-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.games-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.games-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.game-item-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 1.1rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(209, 213, 219, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.game-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+  border-color: #a5b4fc;
+}
+
+.game-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.game-name-link {
+  font-weight: 600;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.game-name-link:hover {
+  color: #2563eb;
+}
+
+.game-difficulty-pill {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: #e0f2fe;
+  color: #1d4ed8;
+}
+
+/* ===== Scores 页表格美化 ===== */
+
+.table-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 1.3rem;
+  padding: 1rem 1rem 0.75rem;
+  border: 1px solid rgba(209, 213, 219, 0.85);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  overflow-x: auto;
+}
+
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table-card thead {
+  background: #f9fafb;
+}
+
+.table-card th,
+.table-card td {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+/* ===== 响应式 ===== */
+
+@media (max-width: 640px) {
+  main {
+    padding: 1.6rem 1.1rem 2.8rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .app-nav-inner {
+    padding-inline: 1rem;
+  }
+
+  .board-card input[type="number"] {
+    width: 38px;
+    height: 38px;
+  }
+}
+

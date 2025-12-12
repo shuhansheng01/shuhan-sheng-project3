@@ -1,0 +1,172 @@
+@import 
+url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+:root {
+  --bg-color: #f4f6f8;
+  --card-bg: #ffffff;
+  --primary-color: #3b82f6;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --board-border: #334155;
+  --cell-border: #e2e8f0;
+  --fixed-bg: #f8fafc;
+  --fixed-text: #0f172a;
+  --error-bg: #fef2f2;
+  --error-text: #ef4444;
+  --highlight-hover: #eff6ff;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 
+0, 0, 0.05);
+}
+
+body {
+  background-color: var(--bg-color);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  margin: 0;
+  overflow-y: scroll;
+}
+
+.game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px auto;
+  padding: 30px 60px; /* 稍微调整padding */
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  width: 600px;
+  min-height: 750px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  color: var(--text-primary);
+}
+
+/* ⏱️ 计时器样式 */
+.timer-display {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  font-family: monospace; /* 等宽字体看时间更舒服 */
+  margin-bottom: 20px;
+  background-color: #f1f5f9;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+.timer-display span {
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-left: 8px;
+}
+
+.sudoku-board {
+  border: 4px solid var(--board-border);
+  display: inline-flex;
+  flex-direction: column;
+  background-color: var(--board-border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: auto;
+}
+
+.board-row {
+  display: flex;
+  justify-content: center;
+}
+
+.cell {
+  width: 54px;
+  height: 54px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 400;
+  border: 1px solid var(--cell-border);
+  outline: none;
+  background-color: #fff;
+  color: var(--primary-color);
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.cell.fixed {
+  background-color: var(--fixed-bg);
+  color: var(--fixed-text);
+  font-weight: 600;
+  cursor: default;
+}
+
+.cell:hover:not(.fixed) {
+  background-color: var(--highlight-hover);
+}
+
+.cell:focus {
+  background-color: #fff;
+  box-shadow: inset 0 0 0 2px var(--primary-color);
+  z-index: 10;
+}
+
+/* ❌ 错误标红 */
+.cell.error {
+  background-color: var(--error-bg) !important;
+  color: var(--error-text) !important;
+  font-weight: 600;
+}
+
+.thick-right { border-right: 3px solid var(--board-border); }
+.thick-bottom { border-bottom: 3px solid var(--board-border); }
+
+.game-controls {
+  margin-top: 30px;
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+button {
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+/* Back 按钮 */
+button:first-child {
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  color: var(--text-secondary);
+}
+button:first-child:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+/* 🔄 重置按钮 (蓝色) */
+.btn-reset {
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+.btn-reset:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* 删除按钮 (红色) */
+.btn-delete {
+  background-color: #fff;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+.btn-delete:hover {
+  background-color: #fef2f2;
+  border-color: #dc2626;
+}

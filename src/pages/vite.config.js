@@ -5,14 +5,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    // 这里的 proxy 设定非常关键
     proxy: {
       '/api': {
-        // 👇 注意这里：有引号，有http，有端口
-        target: 'http://127.0.0.1:8000', 
+        target: 'http://localhost:8000', // 这里必须和你 server.js 里的端口一致
         changeOrigin: true,
         secure: false,
       }
     }
   }
 })
-
