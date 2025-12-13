@@ -1,67 +1,92 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
-import "./NavBar.css"; // 我们稍后创建这个样式
+import React from 'react';
+import { Link } from 'react-router-dom';
+import useAuth from '../utils/useAuth'; // 🚨 导入新的 Hook
 
-export default function NavBar() {
-  const [username, setUsername] = useState(null);
-  const navigate = useNavigate();
-  const location = useLocation(); // 监听路径变化
+// 简单的 Navbar CSS，确保它能居中对齐
+const navStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '10px 40px',
+    backgroundColor: '#ffffff',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+    marginBottom: '20px',
+    width: '100%',
+    boxSizing: 'border-box'
+};
 
-  // 每次页面跳转（比如从登录页跳到游戏页），都重新检查一下登录状态
-  useEffect(() => {
-    axios.get("http://localhost:8000/api/user/me", { withCredentials: true 
-})
-      .then(res => {
-        setUsername(res.data.username);
-      })
-      .catch(() => {
-        setUsername(null); // 没登录或 Cookie 过期
-      });
-  }, [location]); 
+const navLinkStyle = {
+    margin: '0 10px',
+    textDecoration: 'none',
+    color: '#333',
+    fontWeight: '500',
+};
 
-  const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:8000/api/user/logout", {}, { 
-withCredentials: true });
-      setUsername(null);
-      navigate("/login");
-    } catch (e) {
-      console.error("Logout failed");
+export default function Navbar() {
+    const { username, loading, logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+    };
+
+    // 如果正在加载，不显示任何认证链接
+    if (loading) {
+        return (
+            <nav style={navStyle}>
+                <Link to="/" style={{ textDecoration: 'none', fontSize: 
+'1.5rem', fontWeight: 'bold', color: '#007bff' }}>
+                    Sudoku+
+                </Link>
+                <div>
+                    <Link to="/games" style={navLinkStyle}>Games</Link>
+                    <Link to="/rules" style={navLinkStyle}>Rules</Link>
+                    <Link to="/scores" style={navLinkStyle}>Scores</Link>
+                </div>
+                <div>Loading...</div>
+            </nav>
+        );
     }
-  };
 
-  return (
-    <nav className="navbar">
-      <div className="navbar-logo">
-        <Link to="/">Sudoku+</Link>
-      </div>
+    return (
+        <nav style={navStyle}>
+            <Link to="/" style={{ textDecoration: 'none', fontSize: 
+'1.5rem', fontWeight: 'bold', color: '#007bff' }}>
+                Sudoku+
+            </Link>
+            
+            {/* 中间导航链接 */}
+            <div>
+                <Link to="/games" style={navLinkStyle}>Games</Link>
+                <Link to="/rules" style={navLinkStyle}>Rules</Link>
+                <Link to="/scores" style={navLinkStyle}>Scores</Link>
+            </div>
 
-      <div className="navbar-links">
-        <Link to="/">Home</Link>
-        <Link to="/games">Games</Link>
-        <Link to="/rules">Rules</Link>
-        <Link to="/scores">Scores</Link>
-      </div>
-
-      <div className="navbar-auth">
-        {username ? (
-          /* ✅ 登录后显示：用户名 + Logout */
-          <div className="user-info">
-            <span className="welcome-text">Hi, 
-<strong>{username}</strong></span>
-            <button onClick={handleLogout} 
-className="btn-logout">Logout</button>
-          </div>
-        ) : (
-          /* ❌ 没登录显示：Login + Register */
-          <div className="guest-info">
-            <Link to="/login" className="nav-link">Login</Link>
-            <Link to="/register" className="nav-link 
-highlight">Register</Link>
-          </div>
-        )}
-      </div>
-    </nav>
-  );
+            {/* 认证和用户状态 */}
+            <div>
+                {username ? (
+                    <>
+                        <span style={{ ...navLinkStyle, color: '#4CAF50', 
+fontWeight: 'bold' }}>
+                            Hello, {username}
+                        </span>
+                        <button 
+                            onClick={handleLogout} 
+                            style={{ padding: '5px 10px', border: 'none', 
+borderRadius: '4px', cursor: 'pointer', backgroundColor: '#f44336', color: 
+'white' }}
+                        >
+                            Logout
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login" 
+style={navLinkStyle}>Login</Link>
+                        <Link to="/register" style={{ ...navLinkStyle, 
+color: '#007bff' }}>Register</Link>
+                    </>
+                )}
+            </div>
+        </nav>
+    );
 }

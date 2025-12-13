@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import "./Form.css"; // 🚨 确保路径正确
+import "./Form.css"; 
 
 export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [verifyPassword, setVerifyPassword] = useState(''); // 🚨 
+新增密码确认状态
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -13,8 +15,14 @@ export default function Register() {
     e.preventDefault();
     setLoading(true);
 
+    // 🚨 检查密码是否匹配
+    if (password !== verifyPassword) {
+        alert("Registration failed: Passwords do not match.");
+        setLoading(false);
+        return;
+    }
+
     try {
-      // 使用相对路径 /api/...
       const response = await axios.post('/api/user/register', {
         username,
         password,
@@ -32,8 +40,6 @@ export default function Register() {
       let message = 'Register failed.';
       if (err.response && err.response.data === 'Taken') {
         message = 'Username is already taken.';
-      } else if (err.response && err.response.status === 400) {
-        message = 'Invalid username or password.';
       } else {
         message = 'Register failed. Check server connection.';
       }
@@ -41,6 +47,10 @@ export default function Register() {
     }
     setLoading(false);
   };
+
+  // 🚨 检查所有字段是否为空，并确保密码匹配
+  const isFormInvalid = !username || !password || !verifyPassword || 
+password !== verifyPassword;
 
   return (
     <div className="auth-container">
@@ -60,7 +70,15 @@ export default function Register() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" disabled={loading}>
+        {/* 🚨 新增密码确认输入框 */}
+        <input
+          type="password"
+          placeholder="Verify Password"
+          value={verifyPassword}
+          onChange={(e) => setVerifyPassword(e.target.value)}
+          required
+        />
+        <button type="submit" disabled={isFormInvalid || loading}>
           {loading ? 'Registering...' : 'Register'}
         </button>
         <p>
