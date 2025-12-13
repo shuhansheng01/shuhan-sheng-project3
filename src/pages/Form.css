@@ -1,93 +1,166 @@
-/* 引入字体 */
-@import 
-url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+/* --- Form.css: FINAL STYLES for Auth and Scores Pages --- */
 
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f4f6f8;
+/* ----------------------------------------------------- */
+/* 1. AUTHENTICATION CONTAINER (.auth-container)         */
+/* ----------------------------------------------------- */
+
+.auth-container {
+    max-width: 400px;
+    /* 🚨 核心修复：确保容器居中和顶部留白 */
+    margin: 40px auto; 
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border: 1px solid #e0e0e0;
 }
 
-/* 📝 表单卡片容器 */
-.form-container {
-  max-width: 400px;
-  margin: 60px auto; /* 居中显示 */
-  padding: 40px;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
+.auth-container h2 {
+    margin-bottom: 25px;
+    color: #333333;
+    font-size: 1.8rem;
 }
 
-/* 标题 */
-.form-container h1 {
-  margin-top: 0;
-  margin-bottom: 24px;
-  color: #1e293b;
-  text-align: center;
-  font-size: 1.8rem;
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-/* 输入框组 */
-.form-group {
-  margin-bottom: 20px;
+.auth-container input[type="text"],
+.auth-container input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box; 
 }
 
-/* 标签 */
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #475569;
-  font-size: 0.9rem;
+.auth-container button {
+    padding: 12px;
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
 }
 
-/* 输入框 */
-.form-group input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: #1e293b;
-  box-sizing: border-box; /* 防止padding撑破宽度 */
-  transition: border-color 0.2s;
+.auth-container button:hover {
+    background-color: #45a049;
 }
 
-.form-group input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+.auth-container p {
+    margin-top: 20px;
+    color: #666666;
+    font-size: 0.95rem;
 }
 
-/* 🔴 错误提示 */
-.error-msg {
-  background-color: #fef2f2;
-  color: #ef4444;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
-  text-align: center;
-  border: 1px solid #fecaca;
+.auth-container a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
 }
 
-/* 🔵 提交按钮 */
-.btn-primary {
-  width: 100%;
-  padding: 12px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 10px;
+.auth-container a:hover {
+    text-decoration: underline;
 }
 
-.btn-primary:hover {
-  background-color: #2563eb;
+/* ----------------------------------------------------- */
+/* 2. SCORES PAGE CONTAINER (.scores-container)          */
+/* ----------------------------------------------------- */
+
+.scores-container {
+    max-width: 800px;
+    /* 🚨 核心修复：确保 Scores 容器居中并顶部留白 */
+    margin: 40px auto; 
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    /* 确保容器本身是块级元素 */
+    display: block; 
+}
+
+.scores-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.scores-container h1 {
+    color: #333333;
+    font-size: 2rem;
+}
+
+.scores-table {
+    width: 100%; /* 🚨 核心修复：确保表格宽度是 100% */
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.scores-table th, .scores-table td {
+    border: 1px solid #dddddd;
+    padding: 12px;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.scores-table th {
+    background-color: #f5f5f5;
+    font-weight: 700;
+    color: #555555;
+}
+
+.scores-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.scores-table tr:hover {
+    background-color: #f0f0ff; 
+}
+
+.back-button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+/* ----------------------------------------------------- */
+/* 3. UTILITY STYLES (Used across pages)                 */
+/* ----------------------------------------------------- */
+
+.badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.badge.EASY {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.badge.NORMAL {
+    background-color: #ffe8a1;
+    color: #664d03;
 }
