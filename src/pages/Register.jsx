@@ -1,3 +1,5 @@
+// src/pages/Register.jsx
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +26,9 @@ export default function Register() {
       const response = await axios.post('/api/user/register', {
         username,
         password,
+      }, {
+        // 🚨 修复: 确保请求能携带和接收 Cookie 信息
+        withCredentials: true 
       });
 
       if (response.data === 'OK') {
@@ -35,18 +40,19 @@ export default function Register() {
     } catch (err) {
       console.error('Registration error details:', err.response || err);
       
-      let message = 'Register failed.';
+      let message = 'Register failed. Check server connection.';
       if (err.response && err.response.data === 'Taken') {
         message = 'Username is already taken.';
-      } else {
-        message = 'Register failed. Check server connection.';
+      } else if (err.response) {
+        // 捕获后端返回的任何错误信息
+        message = `Register failed: ${err.response.data || 'Unknown 
+error'}`;
       }
       alert(message);
     }
-    setLoading(false);
+    setLoading(false); // 确保无论成功失败，加载状态都会结束
   };
 
-  // 确保当任何字段为空或密码不匹配时，按钮被禁用
   const isFormInvalid = !username || !password || !verifyPassword || 
 password !== verifyPassword;
 

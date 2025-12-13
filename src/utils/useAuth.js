@@ -1,3 +1,5 @@
+// src/utils/useAuth.js
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -6,14 +8,12 @@ export default function useAuth() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // 检查用户是否已登录，使用 /api/user/me
-        // 需要 withCredentials: true 来发送 Cookie
-        axios.get('/api/user/me')
+        // 检查用户是否已登录，需要 withCredentials: true 来发送 Cookie
+        axios.get('/api/user/me', { withCredentials: true }) 
             .then(res => {
                 setUsername(res.data.username);
             })
             .catch(() => {
-                // 如果 API 返回错误（如 401 No auth），则用户未登录
                 setUsername(null);
             })
             .finally(() => {
@@ -22,10 +22,10 @@ export default function useAuth() {
     }, []);
 
     const logout = async () => {
-        // 调用后端登出 API
         await axios.post('/api/user/logout');
         setUsername(null);
     };
 
+    // 🚨 暴露 setUsername，供 Login.jsx 登录成功后更新全局状态
     return { username, loading, logout, setUsername };
 }
