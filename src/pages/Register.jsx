@@ -27,7 +27,6 @@ export default function Register() {
         username,
         password,
       }, {
-        // 确保请求能携带和接收 Cookie 信息
         withCredentials: true 
       });
 
@@ -44,9 +43,9 @@ export default function Register() {
       if (err.response && err.response.data === 'Taken') {
         message = 'Username is already taken.';
       } else if (err.response) {
-        // 🚨 修复: 确保此模板字符串写在一行，避免构建错误
-        message = `Register failed: ${err.response.data || 'Unknown 
-error'}`;
+        // 🚨 最终修复: 使用字符串拼接，消除模板字符串被换行中断的风险
+        const errorData = err.response.data || 'Unknown error';
+        message = 'Register failed: ' + errorData; 
       }
       alert(message);
     }
