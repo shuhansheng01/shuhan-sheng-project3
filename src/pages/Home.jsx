@@ -1,38 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./Form.css"; // 复用之前的漂亮样式
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import "./Form.css"; // 🚨 导入 Form.css
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
-    <div className="form-container" style={{textAlign: 'center', maxWidth: 
-'600px'}}>
-      <h1 style={{fontSize: '3rem', color: '#3b82f6', marginBottom: 
-'10px'}}>Sudoku+</h1>
-      <p style={{fontSize: '1.2rem', color: '#64748b', marginBottom: 
-'40px'}}>
+    // 🚨 修复：使用 scores-container 类名居中内容
+    <div className="scores-container"> 
+      <h1>Sudoku+</h1>
+      <p>
         The best place to play, learn, and master Sudoku.
       </p>
-
-      <div style={{display: 'flex', gap: '20px', justifyContent: 
-'center'}}>
-        <Link to="/games">
-          <button className="btn-primary" style={{padding: '15px 40px', 
-fontSize: '1.1rem'}}>
-            🎮 Start Playing
-          </button>
-        </Link>
-        <Link to="/rules">
-          <button className="btn-primary" style={{backgroundColor: '#fff', 
-color: '#3b82f6', border: '1px solid #3b82f6'}}>
-            📖 Read Rules
-          </button>
-        </Link>
+      <div style={{ display: 'flex', gap: '20px', marginTop: '30px' }}>
+        <button className="back-button" onClick={() => 
+navigate('/games')}>
+          <i className="fas fa-play"></i> Start Playing
+        </button>
+        <button 
+          onClick={() => navigate('/rules')} 
+          style={{ 
+            padding: '10px 20px', 
+            border: '1px solid #007bff', 
+            backgroundColor: 'transparent',
+            color: '#007bff',
+            borderRadius: '6px',
+            cursor: 'pointer'
+          }}
+        >
+          <i className="fas fa-book-reader"></i> Read Rules
+        </button>
       </div>
-
-      <div style={{marginTop: '60px', borderTop: '1px solid #e2e8f0', 
-paddingTop: '20px', color: '#94a3b8'}}>
-        <p>Built for Project 3 · Full Stack MERN App</p>
-      </div>
+      <p style={{ marginTop: '50px', color: '#888' }}>
+        Built for Project 3 · Full Stack MERN App
+      </p>
     </div>
   );
 }
