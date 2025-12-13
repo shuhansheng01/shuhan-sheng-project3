@@ -27,7 +27,7 @@ export default function Register() {
         username,
         password,
       }, {
-        // 🚨 修复: 确保请求能携带和接收 Cookie 信息
+        // 确保请求能携带和接收 Cookie 信息
         withCredentials: true 
       });
 
@@ -44,13 +44,13 @@ export default function Register() {
       if (err.response && err.response.data === 'Taken') {
         message = 'Username is already taken.';
       } else if (err.response) {
-        // 捕获后端返回的任何错误信息
+        // 🚨 修复: 确保此模板字符串写在一行，避免构建错误
         message = `Register failed: ${err.response.data || 'Unknown 
 error'}`;
       }
       alert(message);
     }
-    setLoading(false); // 确保无论成功失败，加载状态都会结束
+    setLoading(false);
   };
 
   const isFormInvalid = !username || !password || !verifyPassword || 
