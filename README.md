@@ -38,10 +38,10 @@ The assignment took approximately **40 hours** to complete. This time was heavil
 ### 5. What bonus points did you accomplish?
 
 * **Completed Bonus Points:**
-    * **Submit Early (3 pts)**: [If you submitted 48 hours early, please confirm here: **Completed (3 pts)**.]
+    * **Delete Game Feature (5 pts)**: Implemented via the `DELETE /api/sudoku/:id` route, allowing users to remove games from their list.
 * **Uncompleted Bonus Points (Functionality)**:
+    * Submit Early
     * Password Encryption
-    * Delete Game Feature
     * Custom Games Feature
 
 ---
