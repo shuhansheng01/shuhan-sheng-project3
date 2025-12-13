@@ -2,6 +2,16 @@ import React from 'react';
 import "./Form.css"; 
 
 export default function Rules() {
+  // 最终的内联样式修复，避免字符串中断
+  const tipBoxStyle = {
+    marginTop: '30px',
+    padding: '15px',
+    borderLeftWidth: '5px', // 分解样式属性
+    borderLeftStyle: 'solid', // 分解样式属性
+    borderLeftColor: '#ffc107', // 分解样式属性
+    backgroundColor: '#fffbe6'
+  };
+
   return (
     <div className="scores-container" style={{ textAlign: 'left' }}>
       <h1>Game Rules</h1>
@@ -30,10 +40,7 @@ repetition.
 through 9 without repetition.
       </p>
 
-      {/* Ensuring this inline style is a single compact line to prevent 
-build failure */}
-      <div style={{marginTop:'30px',padding:'15px',borderLeft:'5px solid 
-#ffc107',backgroundColor:'#fffbe6'}}>
+      <div style={tipBoxStyle}>
         <strong>Tip:</strong> Cells that are part of the original puzzle 
 are 
         <strong style={{ color: 'blue' }}> Fixed </strong> and cannot be 
@@ -44,4 +51,3 @@ Red </strong>.
     </div>
   );
 }
-
