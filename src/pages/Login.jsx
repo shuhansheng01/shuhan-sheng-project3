@@ -28,8 +28,8 @@ export default function Login() {
       });
 
       if (response.data === 'OK') {
-        alert('Login successful!');
-        setGlobalUsername(localUsername); // 更新全局状态
+        alert('Login successful! Redirecting...');
+        setGlobalUsername(localUsername); // 🚨 成功后更新全局状态
         navigate('/'); 
       } else {
         alert('Login failed due to an unknown error.');
@@ -37,11 +37,13 @@ export default function Login() {
     } catch (err) {
       console.error('Login error details:', err.response || err);
       
-      let message = 'Login failed.';
+      let message = 'Login failed. Check server connection.';
       if (err.response && err.response.data === 'Bad login') {
         message = 'Invalid username or password.';
-      } else {
-        message = 'Login failed. Check server connection.';
+      } else if (err.response) {
+        // 使用安全拼接避免构建错误
+        const errorData = err.response.data || 'Unknown error';
+        message = 'Login failed: ' + errorData; 
       }
       alert(message);
     }

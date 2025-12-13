@@ -31,7 +31,7 @@ export default function Register() {
       });
 
       if (response.data === 'OK') {
-        alert('Registration successful! Please log in.');
+        alert('Registration successful! Redirecting to login...');
         navigate('/login');
       } else {
         alert('Registration failed due to an unknown error.');
@@ -43,13 +43,13 @@ export default function Register() {
       if (err.response && err.response.data === 'Taken') {
         message = 'Username is already taken.';
       } else if (err.response) {
-        // 🚨 最终修复: 使用字符串拼接，消除模板字符串被换行中断的风险
+        // 使用安全拼接避免构建错误
         const errorData = err.response.data || 'Unknown error';
         message = 'Register failed: ' + errorData; 
       }
       alert(message);
     }
-    setLoading(false);
+    setLoading(false); 
   };
 
   const isFormInvalid = !username || !password || !verifyPassword || 

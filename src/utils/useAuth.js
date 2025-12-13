@@ -22,10 +22,12 @@ export default function useAuth() {
     }, []);
 
     const logout = async () => {
-        await axios.post('/api/user/logout');
+        // 登出请求也需要 withCredentials
+        await axios.post('/api/user/logout', {}, { withCredentials: true 
+}); 
         setUsername(null);
     };
 
-    // 🚨 暴露 setUsername，供 Login.jsx 登录成功后更新全局状态
+    // 暴露 setUsername，供 Login.jsx 登录成功后更新全局状态
     return { username, loading, logout, setUsername };
 }
