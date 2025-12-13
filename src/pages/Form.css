@@ -6,7 +6,6 @@
 
 .auth-container {
     max-width: 400px;
-    /* 🚨 核心修复：确保容器居中和顶部留白 */
     margin: 40px auto; 
     padding: 30px;
     background-color: #ffffff;
@@ -53,6 +52,11 @@
     background-color: #45a049;
 }
 
+.auth-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 .auth-container p {
     margin-top: 20px;
     color: #666666;
@@ -70,19 +74,17 @@
 }
 
 /* ----------------------------------------------------- */
-/* 2. SCORES PAGE CONTAINER (.scores-container)          */
+/* 2. SCORES / HOME / RULES CONTAINER (.scores-container) */
 /* ----------------------------------------------------- */
 
 .scores-container {
     max-width: 800px;
-    /* 🚨 核心修复：确保 Scores 容器居中并顶部留白 */
     margin: 40px auto; 
     padding: 30px;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border: 1px solid #e0e0e0;
-    /* 确保容器本身是块级元素 */
     display: block; 
 }
 
@@ -101,7 +103,7 @@
 }
 
 .scores-table {
-    width: 100%; /* 🚨 核心修复：确保表格宽度是 100% */
+    width: 100%; 
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -142,7 +144,7 @@
 }
 
 /* ----------------------------------------------------- */
-/* 3. UTILITY STYLES (Used across pages)                 */
+/* 3. UTILITY STYLES */
 /* ----------------------------------------------------- */
 
 .badge {

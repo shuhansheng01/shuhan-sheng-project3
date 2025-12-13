@@ -6,8 +6,7 @@ import "./Form.css";
 export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [verifyPassword, setVerifyPassword] = useState(''); // 🚨 
-新增密码确认状态
+  const [verifyPassword, setVerifyPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -15,7 +14,6 @@ export default function Register() {
     e.preventDefault();
     setLoading(true);
 
-    // 🚨 检查密码是否匹配
     if (password !== verifyPassword) {
         alert("Registration failed: Passwords do not match.");
         setLoading(false);
@@ -48,7 +46,7 @@ export default function Register() {
     setLoading(false);
   };
 
-  // 🚨 检查所有字段是否为空，并确保密码匹配
+  // 确保当任何字段为空或密码不匹配时，按钮被禁用
   const isFormInvalid = !username || !password || !verifyPassword || 
 password !== verifyPassword;
 
@@ -70,7 +68,6 @@ password !== verifyPassword;
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        {/* 🚨 新增密码确认输入框 */}
         <input
           type="password"
           placeholder="Verify Password"

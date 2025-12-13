@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import useAuth from '../utils/useAuth'; // 🚨 导入新的 Hook
+import useAuth from '../utils/useAuth'; 
 
 // 简单的 Navbar CSS，确保它能居中对齐
 const navStyle = {
@@ -29,7 +29,6 @@ export default function Navbar() {
         logout();
     };
 
-    // 如果正在加载，不显示任何认证链接
     if (loading) {
         return (
             <nav style={navStyle}>
@@ -42,7 +41,7 @@ export default function Navbar() {
                     <Link to="/rules" style={navLinkStyle}>Rules</Link>
                     <Link to="/scores" style={navLinkStyle}>Scores</Link>
                 </div>
-                <div>Loading...</div>
+                <div></div>
             </nav>
         );
     }
@@ -61,7 +60,7 @@ export default function Navbar() {
                 <Link to="/scores" style={navLinkStyle}>Scores</Link>
             </div>
 
-            {/* 认证和用户状态 */}
+            {/* 认证和用户状态切换逻辑 */}
             <div>
                 {username ? (
                     <>

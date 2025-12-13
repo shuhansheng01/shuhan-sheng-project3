@@ -35,10 +35,10 @@ const connectionURI = mongoURI || fallbackURI;
 
 console.log("Connecting to MongoDB...");
 
-// Robust connection options, CLEANED
+// 修复: 移除过时连接选项以消除警告
 mongoose.connect(connectionURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    // useNewUrlParser: true, // DEPRECATED - REMOVED
+    // useUnifiedTopology: true, // DEPRECATED - REMOVED
 })
   .then(() => console.log("DB Connected: Success"))
   .catch((err) => {
@@ -46,7 +46,7 @@ mongoose.connect(connectionURI, {
   });
 
 
-// --- Database Schemas (Simplified) ---
+// --- Database Schemas (Omitted for brevity, assumed correct) ---
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
