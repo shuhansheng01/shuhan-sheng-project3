@@ -3,7 +3,7 @@ import "./Form.css"; // 🚨 导入 Form.css
 
 export default function Rules() {
   return (
-    // 🚨 修复：使用 scores-container 类名居中内容
+    // 修复：使用 scores-container 类名居中内容
     <div className="scores-container" style={{ textAlign: 'left' }}>
       <h1>Game Rules</h1>
       <p>
@@ -31,6 +31,7 @@ repetition.
 through 9 without repetition.
       </p>
 
+      {/* 🚨 修复：将内联样式写在一行，避免字符串中断错误 */}
       <div style={{ marginTop: '30px', padding: '15px', borderLeft: '5px 
 solid #ffc107', backgroundColor: '#fffbe6' }}>
         <strong>Tip:</strong> Cells that are part of the original puzzle 
